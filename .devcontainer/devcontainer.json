@@ -1,0 +1,15 @@
+{
+	"name": "Encryption GW Development",
+	"image": "dbcawa/docker_app_dev:encryptiongw_dev_latest",
+	"remoteUser": "container",
+	"workspaceFolder": "/data/data/projects/encryptiongw",
+	"mounts": ["type=bind,source=/data/,target=/data/",
+	           "type=bind,source=/data/data/containerhome/,target=/home/container/"
+	          ],	
+	"appPort": [ "7002:8080","9101:9102","9102:9102","9103:9103","9104:9104","9105:9105"],
+	"runArgs": ["--env-file","${localEnv:HOME}/vscode-env/encryptiongw.env",
+		   "--hostname","encryptiongw-dev"
+		   ],
+	"forwardPorts": [9101,9102,9103,9104,9105],
+	"initializeCommand" : "${localEnv:HOME}/docker-scripts-dev/windows_vbox/postgres_docker_load.sh"
+}
