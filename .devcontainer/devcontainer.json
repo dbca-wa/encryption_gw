@@ -2,11 +2,11 @@
 	"name": "Encryption GW Development",
 	"image": "dbcawa/docker_app_dev:encryptiongw_dev_latest",
 	"remoteUser": "container",
-	"workspaceFolder": "/data/data/projects/encryptiongw",
+	"workspaceFolder": "/data/data/projects/encryption_gw/",
 	"mounts": ["type=bind,source=/data/,target=/data/",
 	           "type=bind,source=/data/data/containerhome/,target=/home/container/"
 	          ],	
-	"appPort": [ "7002:8080","9101:9102","9102:9102","9103:9103","9104:9104","9105:9105"],
+	"appPort": [ "7011:8080","9101:9102","9102:9102","9103:9103","9104:9104","9105:9105"],
 	"runArgs": ["--env-file","${localEnv:HOME}/vscode-env/encryptiongw.env",
 		   "--hostname","encryptiongw-dev"
 		   ],
