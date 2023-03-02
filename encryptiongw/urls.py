@@ -16,11 +16,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, re_path
 from encryptiongw import api 
-from encryptiongw import models
+from encryptiongw import views
+#from encryptiongw import models
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    #re_path(r'^api/([\w|-]+)/$', api.proxy_request)
+    re_path(r'^api/encrypt-data/(?P<apikey>.+)/$', api.encrypt_data),
+    re_path(r'^api/get-encrypted-data/(?P<apikey>.+)/$', api.get_encrypt_data),
+    re_path(r'^api/update-device/$', api.update_device),
+    re_path(r'^private-media/qrcode/(?P<file_id>\d+)-file.(?P<extension>\w\w\w)$', views.getAppFile, name='view_private_file'),
 ]
 
 
