@@ -47,5 +47,6 @@ class DeviceGroupInline(admin.TabularInline):
 @admin.register(models.Device)
 class Device(admin.ModelAdmin):
       list_display = ('id','unique_appid','device_os','app_version','last_seen','expiry_date','active','created')   
-      list_filter = ('device_os','active','app_version')   
+      list_filter = ('device_os','active','app_version')
+      readonly_fields = ('unique_appid','device_os','app_version')  
       inlines = [DeviceGroupInline,]
