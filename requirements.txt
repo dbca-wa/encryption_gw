@@ -8,7 +8,7 @@ gevent==22.10.2
 django-encrypted-model-fields==0.6.5
 ipaddress==1.0.23
 psycopg2-binary==2.8.5
-pycryptodome=3.17
-pycryptodomex=3.17
+pycryptodome==3.17
+pycryptodomex==3.17
 #pycrypto==2.6.1
 qrcode==7.4.2
