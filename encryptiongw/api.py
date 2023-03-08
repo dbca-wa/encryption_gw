@@ -16,7 +16,7 @@ def encrypt_data(request, apikey, *args, **kwargs):
     data = request.POST.get('data', '{}')
     group = request.POST.get('group', None)
     print (api_utils.api_allow(api_utils.get_client_ip(request),apikey) )
-    if encryptiongw_models.API.objects.filter(api_key=apikey,active=1).count():
+    if encryptiongw_models.API.objects.filter(api_key=apikey,active=1).count() > 0:
         if api_utils.api_allow(api_utils.get_client_ip(request),apikey) is True:
     
             ek = models.EncryptionKey.objects.filter(group__name=group, active=True)
@@ -41,7 +41,7 @@ def get_encrypt_data(request, apikey, *args, **kwargs):
     """Encrypt plain text and send back encrypted data with key reference."""
     print (request.POST)
     encrypt_id = request.POST.get('encrypt_id', None)       
-    if encryptiongw_models.API.objects.filter(api_key=apikey,active=1).count():
+    if encryptiongw_models.API.objects.filter(api_key=apikey,active=1).count() > 0:
         print ("KEY")
         if api_utils.api_allow(api_utils.get_client_ip(request),apikey) is True:    
             print ("IP")
