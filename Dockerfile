@@ -16,7 +16,11 @@ RUN apt-get install --no-install-recommends -y libpq-dev patch
 RUN apt-get install --no-install-recommends -y postgresql-client mtr
 RUN apt-get install --no-install-recommends -y sqlite3 vim postgresql-client ssh htop
 RUN ln -s /usr/bin/python3 /usr/bin/python 
-#RUN ln -s /usr/bin/pip3 /usr/bin/pip
+
+RUN groupadd -g 5000 oim
+RUN useradd -g 5000 -u 5000 oim -s /bin/bash -d /app
+USER oim
+
 RUN pip install --upgrade pip
 # Install Python libs from requirements.txt.
 FROM builder_base_encryptiongw as python_libs_encryptiongw
@@ -24,6 +28,7 @@ WORKDIR /app
 COPY requirements.txt ./
 RUN pip3 install --no-cache-dir -r requirements.txt 
 RUN rm -rf /var/lib/{apt,dpkg,cache,log}/ /tmp/* /var/tmp/*
+
 
 # Install the project (ensure that frontend projects have been built prior to this step).
 FROM python_libs_encryptiongw
