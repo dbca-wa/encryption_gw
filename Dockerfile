@@ -41,22 +41,23 @@ RUN pip install --upgrade pip
 # Install Python libs from requirements.txt.
 FROM builder_base_encryptiongw as python_libs_encryptiongw
 WORKDIR /app
-COPY requirements.txt ./
+COPY --chown=oim:oim requirements.txt ./
 RUN pip3 install --no-cache-dir -r requirements.txt 
 RUN rm -rf /var/lib/{apt,dpkg,cache,log}/ /tmp/* /var/tmp/*
 
 
 # Install the project (ensure that frontend projects have been built prior to this step).
 FROM python_libs_encryptiongw
-COPY gunicorn.ini /app
+COPY --chown=oim:oim gunicorn.ini /app
 RUN touch /app/.env
-COPY .git /app/.git
-COPY encryptiongw /app/encryptiongw
-COPY manage.py /app
+COPY --chown=oim:oim .git /app/.git
+COPY --chown=oim:oim encryptiongw /app/encryptiongw
+COPY --chown=oim:oim manage.py /app
+RUN chown -R oim.oim /app/
 RUN ls -la /app/
 RUN ls -al /app/encryptiongw/
 RUN mkdir /app/encryptiongw/cache/
-RUN chmod 777 /app/encryptiongw/cache/
+#RUN chmod 777 /app/encryptiongw/cache/
 RUN python manage.py collectstatic --noinput
 EXPOSE 8080
 HEALTHCHECK --interval=1m --timeout=5s --start-period=10s --retries=3 CMD ["wget", "-q", "-O", "-", "http://localhost:8080/"]
