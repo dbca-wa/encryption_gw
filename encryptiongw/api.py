@@ -15,10 +15,10 @@ def encrypt_data(request, apikey, *args, **kwargs):
             
     data = request.POST.get('data', '{}')
     group = request.POST.get('group', None)
-    print (api_utils.api_allow(api_utils.get_client_ip(request),apikey) )
+    print (api_utils.api_allow(api_utils.get_client_ip(request),apikey))    
     if encryptiongw_models.API.objects.filter(api_key=apikey,active=1).count() > 0:
         if api_utils.api_allow(api_utils.get_client_ip(request),apikey) is True:
-    
+
             ek = models.EncryptionKey.objects.filter(group__name=group, active=True)
             if ek.count() > 0:
                 encoded_data = encryption.encrypt(data,ek[0].id)
@@ -31,6 +31,8 @@ def encrypt_data(request, apikey, *args, **kwargs):
                 ed.encrypted_data=str(ed.id)+"|"+encrypted_data
                 ed.save()                
                 return HttpResponse(json.dumps({'status': 200, 'message': "Success", 'data': ed.encrypted_data}), content_type='application/json', status=200)
+            else:
+                return HttpResponse(json.dumps({'status': 403, 'message': "Group name not found", 'api_key': apikey, 'ip_address': api_utils.get_client_ip(request)}), content_type='application/json', status=403)
         else:            
             return HttpResponse(json.dumps({'status': 403, 'message': "Forbidden Access", 'api_key': apikey, 'ip_address': api_utils.get_client_ip(request)}), content_type='application/json', status=403)
     return HttpResponse(json.dumps({'status': 403, 'message': "Authentication Forbidden", 'ip_address': api_utils.get_client_ip(request)}), content_type='application/json', status=403)
@@ -86,9 +88,7 @@ def update_device(request, *args, **kwargs):
                 print(dg)
                 encryption_keys = models.EncryptionKey.objects.filter(group=dg.group)
                 for ek in encryption_keys:
-                    rsa_keys['id'+str(ek.id)] =  {"private_key": ek.encryption_private_key}
-                    
-                
+                    rsa_keys['id'+str(ek.id)] =  {"private_key": ek.encryption_private_key}                                    
             
         data = {"device": {}, "keys": rsa_keys}
         data['device'] = {'device_id': device.id, "active": device.active}   
