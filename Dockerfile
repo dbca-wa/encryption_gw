@@ -51,7 +51,7 @@ FROM python_libs_encryptiongw
 COPY gunicorn.ini /app
 RUN touch /app/.env
 COPY .git /app/.git
-COPY encryptiongw /app/
+COPY encryptiongw /app/encryptiongw
 COPY manage.py /app
 RUN mkdir /app/encryptiongw/cache/
 RUN chmod 777 /app/encryptiongw/cache/
