@@ -14,7 +14,7 @@ RUN apt-get upgrade -y
 RUN apt-get install --no-install-recommends -y wget git libmagic-dev gcc binutils libproj-dev gdal-bin python3 python3-setuptools python3-dev python3-pip tzdata cron rsyslog python3-pil
 RUN apt-get install --no-install-recommends -y libpq-dev patch
 RUN apt-get install --no-install-recommends -y postgresql-client mtr
-RUN apt-get install --no-install-recommends -y sqlite3 vim postgresql-client ssh htop
+RUN apt-get install --no-install-recommends -y sqlite3 vim postgresql-client ssh htop gunicorn
 RUN ln -s /usr/bin/python3 /usr/bin/python 
 
 
@@ -53,7 +53,7 @@ RUN touch /app/.env
 COPY --chown=oim:oim .git /app/.git
 COPY --chown=oim:oim encryptiongw /app/encryptiongw
 COPY --chown=oim:oim manage.py /app
-RUN chown -R oim.oim /app/
+#RUN chown -R oim.oim /app/
 RUN ls -la /app/
 RUN ls -al /app/encryptiongw/
 RUN mkdir /app/encryptiongw/cache/
