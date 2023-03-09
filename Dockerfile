@@ -53,6 +53,8 @@ RUN touch /app/.env
 COPY .git /app/.git
 COPY encryptiongw /app/encryptiongw
 COPY manage.py /app
+RUN ls -la /app/
+RUN ls -al /app/encryptiongw/
 RUN mkdir /app/encryptiongw/cache/
 RUN chmod 777 /app/encryptiongw/cache/
 RUN python manage.py collectstatic --noinput
