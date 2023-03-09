@@ -17,6 +17,20 @@ RUN apt-get install --no-install-recommends -y postgresql-client mtr
 RUN apt-get install --no-install-recommends -y sqlite3 vim postgresql-client ssh htop
 RUN ln -s /usr/bin/python3 /usr/bin/python 
 
+
+COPY timezone /etc/timezone
+ENV TZ=Australia/Perth
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+COPY cron /etc/cron.d/dockercron
+COPY startup.sh /
+RUN chmod 0644 /etc/cron.d/dockercron
+RUN crontab /etc/cron.d/dockercron
+RUN touch /var/log/cron.log
+RUN service cron start
+RUN chmod 755 /startup.sh
+
+
 RUN groupadd -g 5000 oim
 RUN useradd -g 5000 -u 5000 oim -s /bin/bash -d /app
 RUN mkdir /app
@@ -34,17 +48,8 @@ RUN rm -rf /var/lib/{apt,dpkg,cache,log}/ /tmp/* /var/tmp/*
 
 # Install the project (ensure that frontend projects have been built prior to this step).
 FROM python_libs_encryptiongw
-COPY timezone /etc/timezone
-ENV TZ=Australia/Perth
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-COPY cron /etc/cron.d/dockercron
-COPY startup.sh /
-RUN chmod 0644 /etc/cron.d/dockercron
-RUN crontab /etc/cron.d/dockercron
-RUN touch /var/log/cron.log
-RUN service cron start
-RUN chmod 755 /startup.sh
+
 COPY gunicorn.ini ./
 RUN touch /app/.env
 COPY .git ./.git
