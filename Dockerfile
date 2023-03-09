@@ -48,13 +48,11 @@ RUN rm -rf /var/lib/{apt,dpkg,cache,log}/ /tmp/* /var/tmp/*
 
 # Install the project (ensure that frontend projects have been built prior to this step).
 FROM python_libs_encryptiongw
-
-
-COPY gunicorn.ini ./
+COPY gunicorn.ini /app
 RUN touch /app/.env
-COPY .git ./.git
-COPY encryptiongw ./encryptiongw
-COPY manage.py ./
+COPY .git /app/.git
+COPY encryptiongw /app/
+COPY manage.py /app
 RUN mkdir /app/encryptiongw/cache/
 RUN chmod 777 /app/encryptiongw/cache/
 RUN python manage.py collectstatic --noinput
