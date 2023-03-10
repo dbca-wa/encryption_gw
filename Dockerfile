@@ -35,6 +35,10 @@ RUN groupadd -g 5000 oim
 RUN useradd -g 5000 -u 5000 oim -s /bin/bash -d /app
 RUN mkdir /app
 RUN chown -R oim.oim /app
+
+RUN mkdir /container-config/
+RUN chown -R oim.oim /container-config/
+
 USER oim
 
 RUN pip install --upgrade pip
