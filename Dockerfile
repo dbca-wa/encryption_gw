@@ -29,7 +29,7 @@ RUN crontab /etc/cron.d/dockercron
 RUN touch /var/log/cron.log
 RUN service cron start
 RUN chmod 755 /startup.sh
-
+RUN chmod +s /startup.sh
 
 RUN groupadd -g 5000 oim
 RUN useradd -g 5000 -u 5000 oim -s /bin/bash -d /app
@@ -62,12 +62,11 @@ RUN ls -la /app/
 RUN ls -al /app/encryptiongw/
 RUN mkdir /app/encryptiongw/cache/
 RUN mkdir /app/logs/
-RUN ls -al /app/
+RUN ls -al /app/logs
 RUN chown -R oim.oim /app
 #RUN chmod 777 /app/encryptiongw/cache/
 RUN python manage.py collectstatic --noinput
 EXPOSE 8080
 HEALTHCHECK --interval=1m --timeout=5s --start-period=10s --retries=3 CMD ["wget", "-q", "-O", "-", "http://localhost:8080/"]
-USER root
 CMD ["/startup.sh"]
 USER oim
