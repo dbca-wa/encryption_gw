@@ -35,6 +35,10 @@ RUN groupadd -g 5000 oim
 RUN useradd -g 5000 -u 5000 oim -s /bin/bash -d /app
 RUN mkdir /app
 RUN chown -R oim.oim /app
+
+RUN mkdir /container-config/
+RUN chown -R oim.oim /container-config/
+
 USER oim
 
 RUN pip install --upgrade pip
@@ -57,7 +61,7 @@ COPY --chown=oim:oim manage.py /app
 RUN ls -la /app/
 RUN ls -al /app/encryptiongw/
 RUN mkdir /app/encryptiongw/cache/
-RUN mkdir /app/encryptiongw/logs/
+RUN mkdir /app/logs/
 #RUN chmod 777 /app/encryptiongw/cache/
 RUN python manage.py collectstatic --noinput
 EXPOSE 8080
