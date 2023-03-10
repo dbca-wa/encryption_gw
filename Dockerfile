@@ -63,7 +63,7 @@ RUN ls -al /app/encryptiongw/
 RUN mkdir /app/encryptiongw/cache/
 RUN mkdir /app/logs/
 RUN ls -al /app/
-RUN chown -R container.container /app
+RUN chown -R oim.oim /app
 #RUN chmod 777 /app/encryptiongw/cache/
 RUN python manage.py collectstatic --noinput
 EXPOSE 8080
