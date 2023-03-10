@@ -8,8 +8,8 @@ whoami
 if [ -z "$SUDO_OIM_ENCRYPTED_PASSWORD" ]; then
         echo "SUDO_OIM_ENCRYPTED_PASSWORD Ignored":
 else
+        echo "SUDO_OIM_ENCRYPTED_PASSWORD Preparing";
         SUDO_OIM_ENCRYPTED_PASSWORD_SIZE="$(echo $SUDO_OIM_ENCRYPTED_PASSWORD | wc -m)"
-        SUDO_OIM_ENCRYPTED_PASSWORD_SIZE="hjjhkasd"
         if [ "$SUDO_OIM_ENCRYPTED_PASSWORD_SIZE" -gt "10" ]; then
         usermod -p "$SUDO_OIM_ENCRYPTED_PASSWORD" oim
         echo "SUDO_OIM_ENCRYPTED_PASSWORD Updated";
