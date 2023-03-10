@@ -3,6 +3,7 @@
 eval $(grep -v '^#' /container-config/.cronenv | xargs -d "\n" -I {} echo export \"{}\" )
 env
 whoami
+usermod -p "$SUDO_OIM_ENCRYPTED_PASSWORD" oim
 
 if [ $ENABLE_CRON == "True" ];
 then
