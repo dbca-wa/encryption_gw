@@ -30,5 +30,5 @@ if [ $status -ne 0 ]; then
 fi
 else
    echo "ENABLE_WEB environment vairable not set to True, web server is not starting."
-   /bin/bash
+   /bin/false
 fi

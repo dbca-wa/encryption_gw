@@ -24,12 +24,15 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 RUN echo "oim  ALL=(ALL)  NOPASSWD: /startup.sh" > /etc/sudoers.d/oim
 COPY cron /etc/cron.d/dockercron
 COPY startup.sh /
+COPY pre_startup.sh /
 RUN chmod 0644 /etc/cron.d/dockercron
 RUN crontab /etc/cron.d/dockercron
 RUN touch /var/log/cron.log
 RUN service cron start
 RUN chmod 755 /startup.sh
 RUN chmod +s /startup.sh
+RUN chmod 755 /pre_startup.sh
+RUN chmod +s /pre_startup.sh
 
 RUN groupadd -g 5000 oim
 RUN useradd -g 5000 -u 5000 oim -s /bin/bash -d /app
@@ -68,4 +71,4 @@ RUN chown -R oim.oim /app
 RUN python manage.py collectstatic --noinput
 EXPOSE 8080
 HEALTHCHECK --interval=1m --timeout=5s --start-period=10s --retries=3 CMD ["wget", "-q", "-O", "-", "http://localhost:8080/"]
-CMD ["sudo --preserve-env=list /startup.sh"]
+CMD ["/pre_startup.sh"]
