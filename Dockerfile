@@ -21,7 +21,9 @@ RUN ln -s /usr/bin/python3 /usr/bin/python
 COPY timezone /etc/timezone
 ENV TZ=Australia/Perth
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-RUN echo "oim  ALL=(ALL)  NOPASSWD: /startup.sh" > /etc/sudoers.d/oim
+
+
+
 COPY cron /etc/cron.d/dockercron
 COPY startup.sh /
 COPY pre_startup.sh /
@@ -36,6 +38,10 @@ RUN chmod +s /pre_startup.sh
 
 RUN groupadd -g 5000 oim
 RUN useradd -g 5000 -u 5000 oim -s /bin/bash -d /app
+RUN usermod -a -G sudo oim
+
+RUN echo "oim  ALL=(ALL)  NOPASSWD: /startup.sh" > /etc/sudoers.d/oim
+
 RUN mkdir /app
 RUN chown -R oim.oim /app
 
