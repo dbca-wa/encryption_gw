@@ -6,14 +6,14 @@ whoami
 
 if [ $ENABLE_CRON == "True" ];
 then
-echo "Starting Cron"
-service cron start &
-status=$?
-if [ $status -ne 0 ]; then
-  echo "Failed to start cron: $status"
-  exit $status
+      echo "Starting Cron"
+      service cron start &
+      status=$?
+      if [ $status -ne 0 ]; then
+        echo "Failed to start cron: $status"
+        exit $status
+      fi
 fi
-
 # fi
 
 # if [ $ENABLE_WEB == "True" ];
