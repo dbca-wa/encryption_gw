@@ -61,7 +61,7 @@ COPY --chown=oim:oim manage.py /app
 RUN ls -la /app/
 RUN ls -al /app/encryptiongw/
 RUN mkdir /app/encryptiongw/cache/
-RUN mkdir /app/encryptiongw/logs/
+RUN mkdir /app/logs/
 #RUN chmod 777 /app/encryptiongw/cache/
 RUN python manage.py collectstatic --noinput
 EXPOSE 8080
