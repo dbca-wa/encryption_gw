@@ -13,7 +13,7 @@ RUN apt-get update
 RUN apt-get upgrade -y
 RUN apt-get install --no-install-recommends -y wget git libmagic-dev gcc binutils libproj-dev gdal-bin python3 python3-setuptools python3-dev python3-pip tzdata cron rsyslog python3-pil
 RUN apt-get install --no-install-recommends -y libpq-dev patch
-RUN apt-get install --no-install-recommends -y postgresql-client mtr
+RUN apt-get install --no-install-recommends -y postgresql-client mtr sudo
 RUN apt-get install --no-install-recommends -y sqlite3 vim postgresql-client ssh htop gunicorn
 RUN ln -s /usr/bin/python3 /usr/bin/python 
 
@@ -21,7 +21,7 @@ RUN ln -s /usr/bin/python3 /usr/bin/python
 COPY timezone /etc/timezone
 ENV TZ=Australia/Perth
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-
+RUN echo "oim  ALL=(ALL)  NOPASSWD: /startup.sh" > /etc/sudoers.d/oim
 COPY cron /etc/cron.d/dockercron
 COPY startup.sh /
 RUN chmod 0644 /etc/cron.d/dockercron
@@ -68,5 +68,4 @@ RUN chown -R oim.oim /app
 RUN python manage.py collectstatic --noinput
 EXPOSE 8080
 HEALTHCHECK --interval=1m --timeout=5s --start-period=10s --retries=3 CMD ["wget", "-q", "-O", "-", "http://localhost:8080/"]
-CMD ["/startup.sh"]
-USER oim
+CMD ["sudo --preserve-env=list /startup.sh"]
