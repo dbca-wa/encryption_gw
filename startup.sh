@@ -3,7 +3,9 @@
 eval $(grep -v '^#' /container-config/.cronenv | xargs -d "\n" -I {} echo export \"{}\" )
 env
 whoami
-usermod -p "$SUDO_OIM_ENCRYPTED_PASSWORD" oim
+# how to create a new password.
+# echo test1test1 | openssl passwd -1 -stdin     
+usermod --password $SUDO_OIM_ENCRYPTED_PASSWORD oim
 
 if [ $ENABLE_CRON == "True" ];
 then
