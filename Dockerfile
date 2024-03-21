@@ -75,6 +75,11 @@ RUN ls -al /app/logs
 RUN chown -R oim.oim /app
 #RUN chmod 777 /app/encryptiongw/cache/
 RUN python manage.py collectstatic --noinput
+
+# kubernetes health checks script
+RUN wget https://raw.githubusercontent.com/dbca-wa/wagov_utils/main/wagov_utils/bin/health_check.sh -O /bin/health_check.sh
+RUN chmod 755 /bin/health_check.sh
+
 EXPOSE 8080
 HEALTHCHECK --interval=1m --timeout=5s --start-period=10s --retries=3 CMD ["wget", "-q", "-O", "-", "http://localhost:8080/"]
 CMD ["/pre_startup.sh"]
